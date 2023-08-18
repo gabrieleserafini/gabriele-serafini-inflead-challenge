@@ -7,6 +7,7 @@ import ErrorPage from './ErrorPage.tsx'
 import './index.css'
 import { Container } from '@mui/material'
 import Navbar from './components/Navbar.tsx'
+import Footer from './components/Footer.tsx'
 
 const router = createBrowserRouter([
   {
@@ -26,6 +27,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <Container fixed>
         <Navbar children={<></>} />
         <RouterProvider router={router} />
+        <Footer />
     </Container>  
   </React.StrictMode>,
 )
