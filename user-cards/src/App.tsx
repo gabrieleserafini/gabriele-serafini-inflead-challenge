@@ -1,28 +1,63 @@
 import { Suspense, lazy, useEffect, useState } from 'react'
-import { Box, Button, Container, Grid } from '@mui/material'
+import { Box, Button, Container, Grid, Typography } from '@mui/material'
 import { Link } from 'react-router-dom'
+import { useStore } from './store'
 
 const UserCard = lazy(() => import('./components/UserCard'))
 
+function fetchUsers(size: number): Promise<[]> {
+  return fetch(`https://random-data-api.com/api/users/random_user?size=${size}`)
+    .then(res => res.json());
+}
+
+function rearrangeOrderUsers(
+  users: [],
+  wish: []
+): [] {
+  const rearrangedItems: [] = [];
+
+  for (const item of wish) {
+    const matchingItem = users.find(element => element.id === item.id);
+    if (matchingItem) {
+      rearrangedItems.push(matchingItem);
+    }
+  }
+
+  for (const item of users) {
+    if (!rearrangedItems.some(element => element.id === item.id)) {
+      rearrangedItems.push(item);
+    }
+  }
+
+  return rearrangedItems;
+}
+
 function App() {
-  const [users, setUsers] = useState([])
+  const { wishlist } = useStore()
+  const [users, setUsers] = useState<[]>([])
 
   useEffect(() => {
-    fetch('https://random-data-api.com/api/users/random_user?size=10')
-      .then(res => res.json())
-      .then(data => {
-        setUsers(data)
-      })
-  }, [])
+    fetchUsers(10).then(data => setUsers(data));
+  }, []);
 
   const LoadMore = () => {
-    fetch('https://random-data-api.com/api/users/random_user?size=10')
-      .then(res => res.json())
-      .then(data => setUsers([...users, ...data]))
+    fetchUsers(10).then(data => setUsers(prevUsers => [...prevUsers, ...data]));  
   }
+
+  const rearrangedItems = rearrangeOrderUsers(
+    users,
+    wishlist
+  );
+
+  useEffect(() => {
+    setUsers(rearrangedItems);
+  }, [wishlist]);
 
   return (
     <Container fixed sx={{ my: 4 }}>
+      <Box component="div" sx={{ display: 'flex', justifyContent: 'center', my: 4 }}>
+        <Typography variant="h2" component="h2" sx={{ color: '#2f8fea' }}>User Cards</Typography>
+      </Box>
       <Box component="div" sx={{ display: 'flex', justifyContent: 'center', my: 4 }}>
         <Link to="/wishlist" >Go to My Wish</Link>
       </Box>
