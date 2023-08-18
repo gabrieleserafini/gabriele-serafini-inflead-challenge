@@ -36,11 +36,12 @@ const UserCard: FC<Props> = ({ user }) => {
   const [isFlipped, setIsFlipped] = useState(false);
   
   const ToggleWishlist = () => {
-    console.log(wishlist.includes(user))
     if (wishlist.includes(user)) {
       Cookies.remove('users');
       remove(user);
-      console.log(wishlist);
+      Cookies.set('users', JSON.stringify(wishlist), {
+        expires: 15,
+      });
     } else {
         let cookiesUsers = [];
         if (Cookies.get('users')) {
@@ -53,7 +54,6 @@ const UserCard: FC<Props> = ({ user }) => {
         expires: 15,
       });
       add(user);
-      console.log(wishlist);
     }
   }
 
@@ -63,7 +63,7 @@ const UserCard: FC<Props> = ({ user }) => {
         flipDirection="horizontal"
     >
         <Card 
-            sx={{ maxWidth: '100%', minHeight: '350px' }}
+            sx={{ maxWidth: '100%', minHeight: '400px', maxHeight: '400px' }}
             onMouseEnter={() => setIsFlipped(true)}
             onMouseLeave={() => setIsFlipped(false)}
         >
@@ -89,7 +89,7 @@ const UserCard: FC<Props> = ({ user }) => {
             </CardActions>
         </Card>
         <Card 
-            sx={{ maxWidth: '100%', minHeight: '350px' }}
+            sx={{ maxWidth: '100%', minHeight: '400px', maxHeight: '400px' }}
             onMouseEnter={() => setIsFlipped(true)}
             onMouseLeave={() => setIsFlipped(false)}
         >
