@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { Suspense, lazy } from 'react'
 import { Box, Button, Container, Grid, Typography } from '@mui/material'
-import { useStore } from './store';
+import { useStore } from './utils/store';
 import { Link } from 'react-router-dom';
 import Loader from './assets/Loader.png';
-import { Props } from './typing';
+import { Props } from './utils/typing';
 
 const UserCard = lazy(() => import('./components/UserCard'))
 

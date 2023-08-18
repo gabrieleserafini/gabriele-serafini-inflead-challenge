@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { Props } from '../typing';  
+import { Props } from '../utils/typing';  
 
 export default function rearrangeOrderUsers(users: Props, wish: Props[]): Props[] {
     const rearrangedItems: Props[] = [];

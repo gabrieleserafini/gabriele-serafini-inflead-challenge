@@ -1,9 +1,10 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { Suspense, lazy, useEffect, useState } from 'react'
 import { Box, Button, Container, Grid, Typography } from '@mui/material'
 import { Link } from 'react-router-dom'
-import { useStore } from './store'
+import { useStore } from './utils/store'
 import Loader from './assets/Loader.png'
 import Sorting from './components/Sorting'
 

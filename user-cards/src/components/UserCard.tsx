@@ -14,8 +14,8 @@ import TransgenderIcon from '@mui/icons-material/Transgender';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { IconButton } from '@mui/material';
-import { useStore } from '../store';
-import { Props } from '../typing';
+import { useStore } from '../utils/store';
+import { Props } from '../utils/typing';
 
 const UserCard: FC<Props> = ({ user }) => {
   const { wishlist, add, remove } = useStore();
