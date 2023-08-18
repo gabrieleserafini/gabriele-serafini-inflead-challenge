@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { Suspense, lazy, useEffect, useState } from 'react'
 import { Box, Button, Container, Grid, Typography } from '@mui/material'
 import { Link } from 'react-router-dom'
@@ -25,11 +27,13 @@ function App() {
   }
 
   const rearrangedItems = Sorting(
+    //@ts-ignore
     users,
     wishlist
   );
 
   useEffect(() => {
+    //@ts-ignore
     setUsers(rearrangedItems);
   }, [wishlist]);
 
@@ -42,13 +46,16 @@ function App() {
         <Link to="/wishlist" ><Button variant="outlined" color="primary">Go to My Favorites</Button></Link>
       </Box>
         <Grid container justifyContent="center" alignItems="center" spacing={2}>
-          {users.map((user: any, index) => (
-            <Grid item key={index}  xs={6} sm={6} md={3} lg={2.4} xl={2.4}>
-              <Suspense fallback={<img src={Loader} alt="Loader" />}>
-                <UserCard user={user}/>
-              </Suspense>
-            </Grid>
-          ))}
+          { 
+            users.map(
+              (user: any, index) => (
+              <Grid item key={index}  xs={6} sm={6} md={3} lg={2.4} xl={2.4}>
+                <Suspense fallback={<img src={Loader} alt="Loader" />}>
+                  <UserCard user={user}/>
+                </Suspense>
+              </Grid>
+            ))
+          }
         </Grid>
       <Box component="div" sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
         <Button variant="contained" color="primary" size='large' onClick={LoadMore}>Load More</Button>

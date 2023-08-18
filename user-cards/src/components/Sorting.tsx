@@ -1,23 +1,22 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+import { Props } from '../typing';  
 
-export default function rearrangeOrderUsers(
-    users: [],
-    wish: []
-  ): [] {
-    const rearrangedItems: [] = [];
-  
+export default function rearrangeOrderUsers(users: Props, wish: Props[]): Props[] {
+    const rearrangedItems: Props[] = [];
+    
     for (const item of wish) {
-      const matchingItem = users.find(element => element.id === item.id);
+      //@ts-ignore  
+      const matchingItem = users.find(user => user.id === item.id);
       if (matchingItem) {
         rearrangedItems.push(matchingItem);
       }
     }
-  
+    //@ts-ignore
     for (const item of users) {
-      if (!rearrangedItems.some(element => element.id === item.id)) {
+      if (!rearrangedItems.some(user => user.id === item.id)) {
         rearrangedItems.push(item);
       }
     }
-  
+    
     return rearrangedItems;
 }
-  

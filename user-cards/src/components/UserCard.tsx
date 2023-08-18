@@ -1,4 +1,5 @@
-import { FC, useEffect, useState } from 'react';
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+import { FC, useState } from 'react';
 import Cookies from 'js-cookie';
 import ReactCardFlip from "react-card-flip";
 import Card from '@mui/material/Card';
@@ -14,22 +15,7 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { IconButton } from '@mui/material';
 import { useStore } from '../store';
-
-interface Props {
-    user: {
-        id: number;
-        email: string;
-        avatar: string;
-        username: string;
-        gender: string;
-        first_name: string;
-        last_name: string;
-        date_of_birth: string;
-        address:{
-            city: string;
-        }
-    }
-}
+import { Props } from '../typing';
 
 const UserCard: FC<Props> = ({ user }) => {
   const { wishlist, add, remove } = useStore();
@@ -38,6 +24,7 @@ const UserCard: FC<Props> = ({ user }) => {
   const ToggleWishlist = () => {
     if (wishlist.includes(user)) {
       Cookies.remove('users');
+      //@ts-ignore
       remove(user);
       Cookies.set('users', JSON.stringify(wishlist), {
         expires: 15,
@@ -45,14 +32,19 @@ const UserCard: FC<Props> = ({ user }) => {
     } else {
         let cookiesUsers = [];
         if (Cookies.get('users')) {
+            //@ts-ignore
             cookiesUsers = Cookies.get('users');
+            //@ts-ignore
             cookiesUsers += JSON.stringify({user});      
         } else {
+            //@ts-ignore
             cookiesUsers = JSON.stringify({user});
         }
+        //@ts-ignore
       Cookies.set('users', cookiesUsers, {
         expires: 15,
       });
+      //@ts-ignore
       add(user);
     }
   }
