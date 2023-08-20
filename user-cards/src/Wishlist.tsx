@@ -1,17 +1,14 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { Suspense, lazy } from 'react'
-import { Box, Button, Container, Grid, Typography } from '@mui/material'
+import { Box, Button, Container, Grid, Skeleton, Typography } from '@mui/material'
 import { useStore } from './utils/store';
 import { Link } from 'react-router-dom';
-import Loader from './assets/Loader.png';
 import { Props } from './utils/typing';
 
 const UserCard = lazy(() => import('./components/UserCard'))
 
 function Wishlist() {
   const { wishlist } = useStore();
-
-
 
   return (
     <Container fixed sx={{ my: 4 }}>
@@ -24,7 +21,7 @@ function Wishlist() {
         <Grid container justifyContent="center" alignItems="center" spacing={2}>
           {wishlist.map((user: Props, index) => (
             <Grid item key={index} xs={6} sm={6} md={3} lg={2.4} xl={2.4}>
-              <Suspense fallback={<img src={Loader} alt="Loader" />}>
+              <Suspense fallback={<Skeleton animation="wave" variant="rectangular" width={200} height={400} />}>
                 <UserCard
                   //@ts-ignore 
                   user={user}

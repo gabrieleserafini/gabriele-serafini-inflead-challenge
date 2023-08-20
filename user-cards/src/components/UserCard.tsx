@@ -2,11 +2,8 @@
 import { FC, useState } from 'react';
 import Cookies from 'js-cookie';
 import ReactCardFlip from "react-card-flip";
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Typography from '@mui/material/Typography';
+import {Card, CardActions, CardContent, CardMedia, Typography } from '@mui/material';
+import Notify from './Notify';
 import MoreInfo from '../assets/more-info.jpg';
 import MaleIcon from '@mui/icons-material/Male';
 import FemaleIcon from '@mui/icons-material/Female';
@@ -20,6 +17,8 @@ import { Props } from '../utils/typing';
 const UserCard: FC<Props> = ({ user }) => {
   const { wishlist, add, remove } = useStore();
   const [isFlipped, setIsFlipped] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [isError, setIsError] = useState(false);
   
   const ToggleWishlist = () => {
     if (wishlist.includes(user)) {
@@ -29,6 +28,7 @@ const UserCard: FC<Props> = ({ user }) => {
       Cookies.set('users', JSON.stringify(wishlist), {
         expires: 15,
       });
+      setIsError(true);
     } else {
         let cookiesUsers = [];
         if (Cookies.get('users')) {
@@ -46,10 +46,12 @@ const UserCard: FC<Props> = ({ user }) => {
       });
       //@ts-ignore
       add(user);
+      setIsSuccess(true);
     }
   }
 
   return (
+    <>
     <ReactCardFlip 
         isFlipped={isFlipped}
         flipDirection="horizontal"
@@ -107,6 +109,9 @@ const UserCard: FC<Props> = ({ user }) => {
             </CardActions>
         </Card>
     </ReactCardFlip>
+    <Notify open={isSuccess} setOpen={setIsSuccess} type="success" children="Added to favorites" />
+    <Notify open={isError} setOpen={setIsError} type="error" children="Remove to favorites" />
+    </>
   );
 }
 

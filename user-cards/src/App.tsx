@@ -2,18 +2,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { Suspense, lazy, useEffect, useState } from 'react'
-import { Box, Button, Container, Grid, Typography } from '@mui/material'
+import { Box, Grid, Button, Container, Skeleton, Typography } from '@mui/material'
 import { Link } from 'react-router-dom'
 import { useStore } from './utils/store'
-import Loader from './assets/Loader.png'
 import Sorting from './components/Sorting'
+import fetchUsers from './utils/fetchUsers'
 
 const UserCard = lazy(() => import('./components/UserCard'))
-
-function fetchUsers(size: number): Promise<[]> {
-  return fetch(`https://random-data-api.com/api/users/random_user?size=${size}`)
-    .then(res => res.json());
-}
 
 function App() {
   const { wishlist } = useStore()
@@ -51,7 +46,7 @@ function App() {
             users.map(
               (user: any, index) => (
               <Grid item key={index}  xs={6} sm={6} md={3} lg={2.4} xl={2.4}>
-                <Suspense fallback={<img src={Loader} alt="Loader" />}>
+                <Suspense fallback={<Skeleton animation="wave" variant="rectangular" width={200} height={400} />}>
                   <UserCard user={user}/>
                 </Suspense>
               </Grid>
