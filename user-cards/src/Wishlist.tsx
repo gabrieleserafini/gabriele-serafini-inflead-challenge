@@ -1,14 +1,16 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { Suspense, lazy } from 'react'
+import { Suspense, lazy, useState } from 'react'
 import { Box, Button, Container, Grid, Skeleton, Typography } from '@mui/material'
 import { useStore } from './utils/store';
 import { Link } from 'react-router-dom';
 import { Props } from './utils/typing';
+import Notify from './components/Notify';
 
 const UserCard = lazy(() => import('./components/UserCard'))
 
 function Wishlist() {
   const { wishlist } = useStore();
+  const [isNotify, setIsNotify] = useState(false);
 
   return (
     <Container fixed sx={{ my: 4 }}>
@@ -25,11 +27,13 @@ function Wishlist() {
                 <UserCard
                   //@ts-ignore 
                   user={user}
+                  setIsError={setIsNotify}
                 />
               </Suspense>
             </Grid>
           ))}
         </Grid>
+        <Notify open={isNotify} setOpen={setIsNotify} type="error" children="Remove to favorites" />
     </Container>
   )
 }

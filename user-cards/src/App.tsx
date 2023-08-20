@@ -7,12 +7,15 @@ import { Link } from 'react-router-dom'
 import { useStore } from './utils/store'
 import Sorting from './components/Sorting'
 import fetchUsers from './utils/fetchUsers'
+import Notify from './components/Notify'
 
 const UserCard = lazy(() => import('./components/UserCard'))
 
 function App() {
   const { wishlist } = useStore()
   const [users, setUsers] = useState<[]>([])
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [isError, setIsError] = useState(false);
 
   useEffect(() => {
     fetchUsers(10).then(data => setUsers(data));
@@ -47,7 +50,7 @@ function App() {
               (user: any, index) => (
               <Grid item key={index}  xs={6} sm={6} md={3} lg={2.4} xl={2.4}>
                 <Suspense fallback={<Skeleton animation="wave" variant="rectangular" width={200} height={400} />}>
-                  <UserCard user={user}/>
+                  <UserCard user={user} setIsError={setIsError} setIsSuccess={setIsSuccess}/>
                 </Suspense>
               </Grid>
             ))
@@ -56,6 +59,8 @@ function App() {
       <Box component="div" sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
         <Button variant="contained" color="primary" size='large' onClick={LoadMore}>Load More</Button>
       </Box>
+      <Notify open={isSuccess} setOpen={setIsSuccess} type="success" children="Added to favorites" />
+      <Notify open={isError} setOpen={setIsError} type="error" children="Remove to favorites" />
     </Container>
   )
 }

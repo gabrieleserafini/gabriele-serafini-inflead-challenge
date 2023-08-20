@@ -2,8 +2,7 @@
 import { FC, useState } from 'react';
 import Cookies from 'js-cookie';
 import ReactCardFlip from "react-card-flip";
-import {Card, CardActions, CardContent, CardMedia, Typography } from '@mui/material';
-import Notify from './Notify';
+import {Box, Card, CardActions, CardContent, CardMedia, Typography } from '@mui/material';
 import MoreInfo from '../assets/more-info.jpg';
 import MaleIcon from '@mui/icons-material/Male';
 import FemaleIcon from '@mui/icons-material/Female';
@@ -14,11 +13,9 @@ import { IconButton } from '@mui/material';
 import { useStore } from '../utils/store';
 import { Props } from '../utils/typing';
 
-const UserCard: FC<Props> = ({ user }) => {
+const UserCard: FC<Props> = ({ user, setIsError, setIsSuccess }) => {
   const { wishlist, add, remove } = useStore();
   const [isFlipped, setIsFlipped] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
-  const [isError, setIsError] = useState(false);
   
   const ToggleWishlist = () => {
     if (wishlist.includes(user)) {
@@ -51,67 +48,65 @@ const UserCard: FC<Props> = ({ user }) => {
   }
 
   return (
-    <>
-    <ReactCardFlip 
-        isFlipped={isFlipped}
-        flipDirection="horizontal"
+    <Box 
+        component="span"
+        onMouseEnter={() => setIsFlipped(true)}
+        onMouseLeave={() => setIsFlipped(false)}
     >
-        <Card 
-            sx={{ maxWidth: '100%', minHeight: '400px', maxHeight: '400px' }}
-            onMouseEnter={() => setIsFlipped(true)}
-            onMouseLeave={() => setIsFlipped(false)}
+        <ReactCardFlip 
+            isFlipped={isFlipped}
+            flipDirection="horizontal"
         >
-            <CardMedia
-                component="img"
-                alt="user-avatar"
-                height="140"
-                image={user.avatar}
-            />
-            <CardContent sx={{ minHeight: '100px', maxHeight: '200px' }}>
-                <Typography gutterBottom variant="h6" component="h3" sx={{ textAlign: 'center' }} >
-                    {user.username}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                    <span>{user.email}</span>
-                    <br />
-                    {user.gender === 'Male' ? <MaleIcon /> : user.gender === 'Female' ? <FemaleIcon /> : <TransgenderIcon />}
-                    <span>{user.gender}</span> 
-                </Typography>
-            </CardContent>
-            <CardActions>
-                <IconButton>{wishlist.includes(user) ? <FavoriteIcon /> : <FavoriteBorderIcon />}</IconButton>
-            </CardActions>
-        </Card>
-        <Card 
-            sx={{ maxWidth: '100%', minHeight: '400px', maxHeight: '400px' }}
-            onMouseEnter={() => setIsFlipped(true)}
-            onMouseLeave={() => setIsFlipped(false)}
-        >
-            <CardMedia
-                component="img"
-                alt="user-avatar"
-                height="140"
-                image={MoreInfo}
-            />
-            <CardContent sx={{ minHeight: '100px', maxHeight: '200px' }}>
-                <Typography variant="body2" color="text.secondary">
-                    <span>First Name: {user.first_name}</span>
-                    <br />
-                    <span>Last Name: {user.last_name}</span> 
-                    <br />
-                    <span>Birthday: {user.date_of_birth}</span>
-                    <br />
-                    <span>City: {user.address.city}</span>
-                </Typography>
-            </CardContent>
-            <CardActions>
-                <IconButton onClick={ToggleWishlist}>{wishlist.includes(user) ? <FavoriteIcon /> : <FavoriteBorderIcon />}</IconButton>
-            </CardActions>
-        </Card>
-    </ReactCardFlip>
-    <Notify open={isSuccess} setOpen={setIsSuccess} type="success" children="Added to favorites" />
-    <Notify open={isError} setOpen={setIsError} type="error" children="Remove to favorites" />
-    </>
+            <Card 
+                sx={{ maxWidth: '100%', minHeight: '400px', maxHeight: '400px' }}
+            >
+                <CardMedia
+                    component="img"
+                    alt="user-avatar"
+                    height="140"
+                    image={user.avatar}
+                />
+                <CardContent sx={{ minHeight: '100px', maxHeight: '200px' }}>
+                    <Typography gutterBottom variant="h6" component="h3" sx={{ textAlign: 'center' }} >
+                        {user.username}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                        <span>{user.email}</span>
+                        <br />
+                        {user.gender === 'Male' ? <MaleIcon /> : user.gender === 'Female' ? <FemaleIcon /> : <TransgenderIcon />}
+                        <span>{user.gender}</span> 
+                    </Typography>
+                </CardContent>
+                <CardActions>
+                    <IconButton>{wishlist.includes(user) ? <FavoriteIcon /> : <FavoriteBorderIcon />}</IconButton>
+                </CardActions>
+            </Card>
+            <Card 
+                sx={{ maxWidth: '100%', minHeight: '400px', maxHeight: '400px' }}
+            >
+                <CardMedia
+                    component="img"
+                    alt="user-avatar"
+                    height="140"
+                    image={MoreInfo}
+                />
+                <CardContent sx={{ minHeight: '100px', maxHeight: '200px' }}>
+                    <Typography variant="body2" color="text.secondary">
+                        <span>First Name: {user.first_name}</span>
+                        <br />
+                        <span>Last Name: {user.last_name}</span> 
+                        <br />
+                        <span>Birthday: {user.date_of_birth}</span>
+                        <br />
+                        <span>City: {user.address.city}</span>
+                    </Typography>
+                </CardContent>
+                <CardActions>
+                    <IconButton onClick={ToggleWishlist}>{wishlist.includes(user) ? <FavoriteIcon /> : <FavoriteBorderIcon />}</IconButton>
+                </CardActions>
+            </Card>
+        </ReactCardFlip>
+    </Box>
   );
 }
 

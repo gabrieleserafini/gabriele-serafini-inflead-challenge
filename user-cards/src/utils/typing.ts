@@ -1,4 +1,6 @@
 export interface Props {
+    setIsSuccess: React.Dispatch<React.SetStateAction<boolean>>;
+    setIsError: React.Dispatch<React.SetStateAction<boolean>>;
     user: {
         id: number;
         email: string;
